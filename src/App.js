@@ -1,7 +1,12 @@
-import PropsApp from "./apps/PropsApp";
+import { PropsApp, PropsAppComposition } from "./apps";
 
 function App() {
-  return <PropsApp />;
+  return (
+    <>
+      {/* <PropsApp /> */}
+      <PropsAppComposition />
+    </>
+  );
 }
 
 export default App;

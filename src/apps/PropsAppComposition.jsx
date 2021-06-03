@@ -23,7 +23,10 @@ const PropsApp = () => {
   return (
     <>
       <Nav movies={movies} />
-      <MovieBox movies={movies} like={like} dislike={dislike} />
+      {/* <MovieBox movies={movies} like={like} dislike={dislike} /> */}
+      <MovieBox>
+        <MovieList movies={movies} like={like} dislike={dislike} />
+      </MovieBox>
     </>
   );
 };
@@ -65,11 +68,12 @@ const TopLikes = ({ topLikesNumber }) => {
 
 /***  NAV SECTION ***/
 
-const MovieBox = ({ movies, like, dislike }) => {
-  console.log("Movie Box rerender");
+const MovieBox = ({ children }) => {
+  console.log("Movie Box rerendered");
   return (
     <section className="movie-box">
-      <MovieList movies={movies} like={like} dislike={dislike} />
+      <h2>Movie Box</h2>
+      {children}
     </section>
   );
 };
@@ -77,7 +81,7 @@ const MovieBox = ({ movies, like, dislike }) => {
 const MovieList = ({ movies, like, dislike }) => {
   return (
     <div>
-      <h2>List of Movies</h2>
+      <h3>List of Movies</h3>
       <div className="movie-list">
         {movies.map((movie) => (
           <MovieListItem
