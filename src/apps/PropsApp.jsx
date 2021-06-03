@@ -4,10 +4,11 @@ import { movieList } from "./resources";
 
 const PropsApp = () => {
   const [movies, setMovies] = React.useState(movieList);
+
   const updateLikes = (id, value) => {
+    const index = movies.findIndex((movie) => movie.id === id);
+    const movie = movies[index];
     setMovies((movies) => {
-      const index = movies.findIndex((movie) => movie.id === id);
-      const movie = movies[index];
       return [
         ...movies.slice(0, index),
         { ...movie, likes: movie.likes + value },
@@ -22,71 +23,91 @@ const PropsApp = () => {
   return (
     <>
       <Nav movies={movies} />
-      <Body movies={movies} like={like} dislike={dislike} />
+      <MovieBox movies={movies} like={like} dislike={dislike} />
     </>
   );
 };
 
 export default PropsApp;
 
+// ----------------------------------------------------------------
+
+/***  NAV SECTION ***/
 const Nav = ({ movies }) => {
-  const topMovieName = movies.reduce(
-    (max, current) => (current.likes > max.likes ? current : max),
+  const topMovie = movies.reduce(
+    (max, currentMovie) =>
+      currentMovie.likes > max.likes ? currentMovie : max,
     movies[0]
-  ).name;
-  const totalLikes = movies.reduce(
-    (accumulator, movie) => accumulator + movie.likes,
+  );
+
+  const topLikesNumber = movies.reduce(
+    (totalLikes, currentMovie) => totalLikes + currentMovie.likes,
     0
   );
 
   return (
-    <div className="nav">
-      <TopMovie topMovieName={topMovieName} />
-      <TotalLikes totalLikes={totalLikes} />
-    </div>
+    <nav>
+      <TopMovie topMovieName={topMovie.name} />
+      <TopLikes topLikesNumber={topLikesNumber} />
+    </nav>
   );
 };
 
-const TopMovie = ({ topMovieName }) => <div>{topMovieName}</div>;
+const TopMovie = ({ topMovieName }) => {
+  return <div className="top-movie">{topMovieName}</div>;
+};
 
-const TotalLikes = ({ totalLikes }) => <div>Total Likes: {totalLikes}</div>;
+const TopLikes = ({ topLikesNumber }) => {
+  return <div className="top-movie"> Total Likes : {10}</div>;
+};
 
-const Body = ({ movies, like, dislike }) => (
-  <div className="body">
-    <Movies movies={movies} like={like} dislike={dislike} />
-  </div>
-);
+// ----------------------------------------------------------------
 
-const Movies = ({ movies, like, dislike }) => {
-  const [movieIds] = React.useState(movieList.map((movie) => movie.id));
+/***  NAV SECTION ***/
 
+const MovieBox = ({ movies, like, dislike }) => {
+  return (
+    <section className="movie-box">
+      <MovieList movies={movies} like={like} dislike={dislike} />
+    </section>
+  );
+};
+
+const MovieList = ({ movies, like, dislike }) => {
   return (
     <div>
-      <h2>Movies</h2>
+      <h2>List of Movies</h2>
       <div className="movie-list">
-        {movieIds.map((id) => (
-          <Movie key={id} movie={movies[id]} like={like} dislike={dislike} />
+        {movies.map((movie) => (
+          <MovieListItem
+            key={movie.id}
+            movie={movie}
+            like={like}
+            dislike={dislike}
+          />
         ))}
       </div>
     </div>
   );
 };
 
-const Movie = ({ movie, like, dislike }) => (
-  <div className="movie-item">
-    <div>{movie.name}</div>
-    <div>{movie.likes}</div>
-    <div>
-      <button onClick={() => like(movie.id)}>
-        <span role="img" aria-label="like">
-          👍🏼
-        </span>
-      </button>
-      <button onClick={() => dislike(movie.id)}>
-        <span role="img" aria-label="dislike">
-          👎🏼
-        </span>
-      </button>
+const MovieListItem = ({ movie, like, dislike }) => {
+  return (
+    <div className="movie-item">
+      <h5>{movie.name}</h5>
+      <h5>Likes : {movie.likes}</h5>
+      <div>
+        <button onClick={() => like(movie.id)}>
+          <span role="img" aria-label="like">
+            👍🏼
+          </span>
+        </button>
+        <button onClick={() => dislike(movie.id)}>
+          <span role="img" aria-label="like">
+            👎🏼
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
