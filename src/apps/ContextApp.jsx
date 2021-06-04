@@ -28,7 +28,7 @@ function useMovieState() {
 }
 
 function useMovieUpdate() {
-  const context = React.useContext(MovieStateContext);
+  const context = React.useContext(MovieUseStateContext);
   if (context === undefined) {
     throw new Error(
       "useMovieUpdate must be called inside MovieContext Provider"
@@ -55,7 +55,6 @@ export default ContextApp;
 /***  NAV SECTION ***/
 const Nav = () => {
   const movies = useMovieState();
-
   const topMovie = movies.reduce(
     (max, currentMovie) =>
       currentMovie.likes > max.likes ? currentMovie : max,
@@ -75,9 +74,9 @@ const Nav = () => {
   );
 };
 
-const TopMovie = ({ topMovieName }) => {
+const TopMovie = React.memo(({ topMovieName }) => {
   return <div className="top-movie">{topMovieName}</div>;
-};
+});
 
 const TotalLikes = ({ totalLikes }) => {
   return <div className="top-movie">{totalLikes}</div>;
@@ -87,6 +86,7 @@ const TotalLikes = ({ totalLikes }) => {
 
 /***  BODY SECTION ***/
 const MovieBox = ({ children }) => {
+  console.log("Movie Box rerender");
   return (
     <section className="movie-box">
       <h2>Movie Box</h2>
@@ -98,36 +98,40 @@ const MovieBox = ({ children }) => {
 const MovieList = () => {
   const movies = useMovieState();
   return (
-    <div>
+    <>
       <h3>List of Movies</h3>
-      {movies.map((movie) => (
-        <MovieListItem movie={movie} />
-      ))}
-    </div>
+      <div className="movie-list">
+        {movies.map((movie) => (
+          <MovieListItem movie={movie} key={movie.id} />
+        ))}
+      </div>
+    </>
   );
 };
 
 const MovieListItem = ({ movie }) => {
-  const useLikes = useMovieUpdate();
-  const updateLikes = (id, value) => {};
+  const setLikes = useMovieUpdate();
+  const updateLikes = (id, value) => {
+    setLikes((movies) => {
+      movies[id].likes += value;
+      return [...movies];
+    });
+  };
 
   const like = (id) => updateLikes(id, 1);
   const dislike = (id) => updateLikes(id, -1);
 
-  const sth = () => {
-    console.log("button pressed");
-  };
   return (
     <div className="movie-item">
       <h5>{movie.name}</h5>
       <h5>Likes : {movie.likes} </h5>
       <div>
-        <button onClick={sth}>
+        <button onClick={() => like(movie.id)}>
           <span role="img" aria-label="like">
             👍🏼
           </span>
         </button>
-        <button onClick={sth}>
+        <button onClick={() => dislike(movie.id)}>
           <span role="img" aria-label="like">
             👎🏼
           </span>

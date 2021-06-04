@@ -1,9 +1,10 @@
 import React from "react";
 import "./App.styles.css";
 import { movieList } from "./resources";
+import { useImmer } from "use-immer";
 
 const PropsApp = () => {
-  const [movies, setMovies] = React.useState(movieList);
+  const [movies, setMovies] = useImmer(movieList);
 
   const updateLikes = (id, value) => {
     const index = movies.findIndex((movie) => movie.id === id);
@@ -23,7 +24,6 @@ const PropsApp = () => {
   return (
     <>
       <Nav movies={movies} />
-      {/* <MovieBox movies={movies} like={like} dislike={dislike} /> */}
       <MovieBox>
         <MovieList movies={movies} like={like} dislike={dislike} />
       </MovieBox>
@@ -66,7 +66,7 @@ const TopLikes = ({ topLikesNumber }) => {
 
 // ----------------------------------------------------------------
 
-/***  NAV SECTION ***/
+/***  BODY SECTION ***/
 
 const MovieBox = ({ children }) => {
   console.log("Movie Box rerendered");
