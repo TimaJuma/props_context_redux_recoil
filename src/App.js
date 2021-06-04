@@ -1,10 +1,11 @@
-import { PropsApp, PropsAppComposition } from "./apps";
+import { PropsApp, PropsAppComposition, ContextApp } from "./apps";
 
 function App() {
   return (
     <>
       {/* <PropsApp /> */}
-      <PropsAppComposition />
+      {/* <PropsAppComposition /> */}
+      <ContextApp />
     </>
   );
 }

@@ -15,6 +15,6 @@ this approach leads to extra rerender as on App level to use `useState` that cau
 #### 2. `useState` + using composition
 
 composition is used to avoid props drilling where the component does not use props but just passes them down.
-basically, we just use medium component as wrapper and render child between the middle component
+basically, we just use medium component as wrapper (`MovieBox`) and render child between the middle component
 [as a reference I used Michael Jackson's video](https://www.youtube.com/watch?v=3XaXKiXtNjw)
-it doesn't solve rerender of the **wrapper** component, which I will try to solve further
+it doesn't solve rerender of the **wrapper** component, since the state is shared on `App` level between `Nav` & `MovieBox`
