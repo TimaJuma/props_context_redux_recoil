@@ -113,19 +113,19 @@ const MovieList = () => {
 const MovieListItem = ({ movie }) => {
   const setMovies = useMovieUpdate();
 
-  function like(id) {
+  const like = (id) => {
     setMovies((draft) => {
       draft[id].likes++;
     });
     return;
-  }
+  };
 
-  function dislike(id) {
+  const dislike = (id) => {
     setMovies((draft) => {
       draft[id].likes--;
     });
     return;
-  }
+  };
 
   return (
     <div className="movie-item">
