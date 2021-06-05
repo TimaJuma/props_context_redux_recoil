@@ -1,13 +1,14 @@
 import React from "react";
 import "./App.styles.css";
 import { movieList } from "./resources";
+import { useImmer } from "use-immer";
 
 /** Creating context for the state and useState for optimization **/
 const MovieStateContext = React.createContext();
 const MovieUseStateContext = React.createContext();
 
 const MovieProvider = ({ children }) => {
-  const [movies, setMovies] = React.useState(movieList);
+  const [movies, setMovies] = useImmer(movieList);
   return (
     <MovieStateContext.Provider value={movies}>
       <MovieUseStateContext.Provider value={setMovies}>
@@ -110,16 +111,21 @@ const MovieList = () => {
 };
 
 const MovieListItem = ({ movie }) => {
-  const setLikes = useMovieUpdate();
-  const updateLikes = (id, value) => {
-    setLikes((movies) => {
-      movies[id].likes += value;
-      return [...movies];
-    });
-  };
+  const setMovies = useMovieUpdate();
 
-  const like = (id) => updateLikes(id, 1);
-  const dislike = (id) => updateLikes(id, -1);
+  function like(id) {
+    setMovies((draft) => {
+      draft[id].likes++;
+    });
+    return;
+  }
+
+  function dislike(id) {
+    setMovies((draft) => {
+      draft[id].likes--;
+    });
+    return;
+  }
 
   return (
     <div className="movie-item">
