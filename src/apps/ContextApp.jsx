@@ -8,7 +8,9 @@ const MovieStateContext = React.createContext();
 const MovieUseStateContext = React.createContext();
 
 const MovieProvider = ({ children }) => {
+  console.log("Movie Box render");
   const [movies, setMovies] = useImmer(movieList);
+
   return (
     <MovieStateContext.Provider value={movies}>
       <MovieUseStateContext.Provider value={setMovies}>
@@ -103,14 +105,15 @@ const MovieList = () => {
       <h3>List of Movies</h3>
       <div className="movie-list">
         {movies.map((movie) => (
-          <MovieListItem movie={movie} key={movie.id} />
+          <MovieListItem key={movie.id} movie={movie} />
         ))}
       </div>
     </>
   );
 };
 
-const MovieListItem = ({ movie }) => {
+const MovieListItem = React.memo(({ movie }) => {
+  console.log("Movie Item rendered");
   const setMovies = useMovieUpdate();
 
   const like = (id) => {
@@ -145,4 +148,4 @@ const MovieListItem = ({ movie }) => {
       </div>
     </div>
   );
-};
+});
