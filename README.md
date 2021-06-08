@@ -19,7 +19,7 @@ we use the medium component as a Wrapper (`MovieBox`) and render the child betwe
 [as a reference, I used Michael Jackson's video](https://www.youtube.com/watch?v=3XaXKiXtNjw)
 it doesn't solve rerender of the **wrapper** component since the state is shared on the `App` level between `Nav` & `MovieBox.`
 
-#### 2. `Context + Immer`
+#### 3. `Context + Immer`
 
 another method to pass the global state without props drilling is to use `Context.`
 According to Sophie Alpert's [tweet](https://twitter.com/sophiebits/status/1228942768543686656), the Component Right Under Context Provider probably should be memoized with `React.memo`. Alternative to this statement also comes the composition pattern, which helps avoid unnecessary rerender of the component under `Context Provider`.
@@ -34,3 +34,9 @@ throw new Error('useValue must be used within a SomeProvider')
 return context
 }
 ```
+
+#### 3. `Context + Immer`
+
+Redux is a hammer. When you start using hammer everything feels like nails.
+Not everything needs redux.
+People say that redux needs too much boiletplate.
