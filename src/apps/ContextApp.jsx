@@ -8,7 +8,6 @@ const MovieStateContext = React.createContext();
 const MovieUseStateContext = React.createContext();
 
 const MovieProvider = ({ children }) => {
-  console.log("Movie Box render");
   const [movies, setMovies] = useImmer(movieList);
 
   return (
@@ -89,7 +88,6 @@ const TotalLikes = ({ totalLikes }) => {
 
 /***  BODY SECTION ***/
 const MovieBox = ({ children }) => {
-  console.log("Movie Box rerender");
   return (
     <section className="movie-box">
       <h2>Movie Box</h2>
@@ -99,6 +97,7 @@ const MovieBox = ({ children }) => {
 };
 
 const MovieList = () => {
+  console.log("Movie List rendered");
   const movies = useMovieState();
   return (
     <>
@@ -112,7 +111,7 @@ const MovieList = () => {
   );
 };
 
-const MovieListItem = React.memo(({ movie }) => {
+const MovieListItem = ({ movie }) => {
   console.log("Movie Item rendered");
   const setMovies = useMovieUpdate();
 
@@ -148,4 +147,4 @@ const MovieListItem = React.memo(({ movie }) => {
       </div>
     </div>
   );
-});
+};
